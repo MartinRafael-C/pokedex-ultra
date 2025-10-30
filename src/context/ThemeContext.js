@@ -1,3 +1,4 @@
+// src/context/ThemeContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Appearance } from 'react-native';
 
@@ -16,11 +17,11 @@ export const ThemeProvider = ({ children }) => {
     isDark,
     toggle: () => setIsDark(prev => !prev),
     colors: {
-      background: isDark ? '#121212' : '#f5f5f5',
-      card: isDark ? '#1e1e1e' : '#fff',
-      text: isDark ? '#fff' : '#000',
-      primary: '#ff6b6b',
-      accent: '#4ecdc4',
+      background: isDark ? '#000080' : '#87CEEB', // Azul marino / Azul cielo (Pokémon azul)
+      card: isDark ? '#1e1e1e' : '#FFF',
+      text: isDark ? '#FFF' : '#000',
+      primary: '#EE151B', // Rojo Pokémon
+      accent: '#FFCB05', // Amarillo Pokémon
     }
   };
 
