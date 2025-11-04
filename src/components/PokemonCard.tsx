@@ -1,65 +1,55 @@
 // src/components/PokemonCard.tsx
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { Audio } from 'expo-av';
-import { Pokemon } from '../types/pokemon';
+import { TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { useThemeColor } from '../hooks/useThemedColor';
 
-interface Props {
-  pokemon: Pokemon;
-  onPress: () => void;
-}
+type Props = {
+  pokemon: any;
+  onPress: () => void;        // OBLIGATORIO
+  playSound?: () => void;     // OPCIONAL
+};
 
-const PokemonCard: React.FC<Props> = ({ pokemon, onPress }) => {
-  const { colors } = useTheme();
+export default function PokemonCard({ pokemon, onPress, playSound }: Props) {
+  const cardColor = useThemeColor('card');
+  const textColor = useThemeColor('text');
 
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('../../assets/sounds/poke-sound.mp3')
-      );
-      await sound.playAsync();
-      setTimeout(() => sound.unloadAsync(), 1000);
-    } catch (e) {}
+  const handlePress = () => {
+    playSound?.();  // Solo si se pasa
+    onPress();      // Siempre se ejecuta
   };
 
   return (
     <TouchableOpacity
-      style={[styles.card, { backgroundColor: colors.card }]}
-      onPress={() => { playSound(); onPress(); }}
+      style={[styles.card, { backgroundColor: cardColor }]}
+      onPress={handlePress}
     >
       <Image
-        source={{ uri: pokemon.sprites.other['official-artwork'].front_default }}
+        source={{ uri: pokemon.sprites.front_default }}
         style={styles.sprite}
       />
-      <View style={styles.info}>
-        <Text style={[styles.name, { color: colors.text }]}>
-          #{pokemon.id} {pokemon.name.toUpperCase()}
-        </Text>
-        <Text style={[styles.desc, { color: colors.text }]} numberOfLines={2}>
-          {pokemon.description || 'Pokémon misterioso.'}
-        </Text>
-      </View>
+      <Text style={[styles.name, { color: textColor }]}>
+        {pokemon.name.toUpperCase()}
+      </Text>
+      <Text style={[styles.id, { color: textColor }]}>
+        #{String(pokemon.id).padStart(3, '0')}
+      </Text>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  card: { 
-    flexDirection: 'row', 
-    padding: 12, 
-    borderRadius: 16, 
-    margin: 6, 
-    elevation: 3,
-    borderLeftWidth: 4,
-    borderLeftColor: '#EE151B',
-    borderRightWidth: 4,
-    borderRightColor: '#00BFFF'
+  card: {
+    width: 160,
+    padding: 12,
+    borderRadius: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
-  sprite: { width: 80, height: 80, marginRight: 12 },
-  info: { flex: 1, justifyContent: 'center' },
-  name: { fontSize: 15, fontWeight: 'bold' },
-  desc: { fontSize: 11, opacity: 0.7, marginTop: 4 }
+  sprite: { width: 100, height: 100 },
+  name: { fontSize: 16, fontWeight: 'bold', marginTop: 8 },
+  id: { fontSize: 12, opacity: 0.7 },
 });
-
-export default PokemonCard;
