@@ -1,24 +1,33 @@
+// src/components/LoadingScreen.tsx
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeColor } from '../hooks/useThemedColor';
 
-interface Props {
+type Props = {
   message?: string;
-}
-
-const LoadingScreen: React.FC<Props> = ({ message = "Cargando..." }) => {
-  const { colors } = useTheme();
-  return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ActivityIndicator size="large" color="#FFCB05" />
-      <Text style={[styles.text, { color: colors.text }]}>{message}</Text>
-    </View>
-  );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  text: { marginTop: 16, fontSize: 18, fontWeight: 'bold' }
-});
+export default function LoadingScreen({ message = 'Cargando...' }: Props) {
+  const background = useThemeColor('bg');
+  const text = useThemeColor('text');
 
-export default LoadingScreen;
+  return (
+    <View style={[styles.container, { backgroundColor: background }]}>
+      <ActivityIndicator size="large" color="#FFCB05" />
+      <Text style={[styles.text, { color: text }]}>{message}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});

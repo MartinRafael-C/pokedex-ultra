@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.pokedexultra"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ff6b6b"
-      }
+      },
+      "package": "com.anonymous.pokedexultra"
     },
     "web": {
       "bundler": "metro",

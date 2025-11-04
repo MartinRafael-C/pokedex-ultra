@@ -1,8 +1,8 @@
 // app/modal.tsx
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { StyleSheet } from 'react-native';
 
 export default function ModalScreen() {
   return (
